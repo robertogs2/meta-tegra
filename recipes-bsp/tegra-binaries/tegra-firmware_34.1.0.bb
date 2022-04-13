@@ -17,6 +17,7 @@ do_install() {
     cp -R -f ${S}/lib/firmware ${D}${nonarch_base_libdir}
 }
 
+# TODO: Should we add here something else? Seems like t234 doesn't have the same support for firmware
 PACKAGES = "${PN}-rtl8822 ${PN}-brcm ${PN}-tegra194-xusb ${PN}-tegra194 ${PN}-tegra234 ${PN}-xusb ${PN}-vic ${PN}"
 FILES:${PN}-brcm = "${nonarch_base_libdir}/firmware/brcm ${nonarch_base_libdir}/firmware/bcm4354.hcd ${nonarch_base_libdir}/firmware/nv-*-Version"
 FILES:${PN}-rtl8822 = "${nonarch_base_libdir}/firmware/rtl8822*"

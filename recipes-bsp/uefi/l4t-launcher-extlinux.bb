@@ -76,6 +76,11 @@ do_sign_files() {
 do_sign_files[dirs] = "${B}"
 do_sign_files[depends] += "${TEGRA_SIGNING_EXTRA_DEPS}"
 
+# TODO: Removing signing as Orin doesn't use this
+do_sign_files:tegra234() {
+    :
+}
+
 addtask sign_files after do_create_extlinux_config before do_install
 
 do_install() {
@@ -86,6 +91,19 @@ do_install() {
     fi
     if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
         install -m 0644 ${B}/initrd ${B}/initrd.sig ${D}/boot/
+    fi
+    install -m 0644 ${B}/extlinux.conf ${D}/boot/extlinux/
+}
+
+# TODO: Removing signing as Orin doesn't use this
+do_install:tegra234() {
+    install -d ${D}/boot/extlinux
+    install -m 0644 ${B}/${KERNEL_IMAGETYPE} ${D}/boot/
+    if [ -n "${UBOOT_EXTLINUX_FDT}" ]; then
+        install -m 0644 ${B}/${DTBFILE} ${D}/boot/
+    fi
+    if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
+        install -m 0644 ${B}/initrd ${D}/boot/
     fi
     install -m 0644 ${B}/extlinux.conf ${D}/boot/extlinux/
 }
